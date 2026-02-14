@@ -1,0 +1,8 @@
+pydantic
+dishka
+fastapi
+uvicorn
+SQLAlchemy[asyncio]
+alembic
+psycopg[binary, pool]
+
