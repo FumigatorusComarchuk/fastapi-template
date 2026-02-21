@@ -1,13 +1,27 @@
-from src.application.interfaces import DossierReader, DossierSaver, DBSession, UUIDGenerator
+from typing import List
+from src.application.interfaces import (
+    DossierReader,
+    DossierSaver,
+    DBSession,
+    UUIDGenerator,
+)
 from src.application.dto import NewDossierDTO
 from src.domain.dossier import Dossier
+
+
+class GetDossierListInteractor:
+    def __init__(self, dossier_gateway: DossierReader):
+        self._dossier_gateway = dossier_gateway
+
+    async def __call__(self) -> List[Dossier] | List:
+        return await self._dossier_gateway.get_all()
 
 
 class GetDossierInteractor:
     def __init__(
         self,
         dossier_gateway: DossierReader,
-    ) -> None:
+    ):
         self._dossier_gateway = dossier_gateway
 
     async def __call__(self, uuid: str) -> Dossier | None:
@@ -20,7 +34,7 @@ class NewDossierInteractor:
         db_session: DBSession,
         dossier_gateway: DossierSaver,
         uuid_generator: UUIDGenerator,
-    ) -> None:
+    ):
         self._db_session = db_session
         self._dossier_gateway = dossier_gateway
         self._uuid_generator = uuid_generator
@@ -40,4 +54,3 @@ class NewDossierInteractor:
         await self._dossier_gateway.save(dossier)
         await self._db_session.commit()
         return uuid
-

@@ -1,3 +1,4 @@
+from typing import List
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.sql import text
 
@@ -48,3 +49,19 @@ class DossierGateway(
             },
         )
 
+    async def get_all(self) -> List[Dossier] | List:
+        query = text("SELECT * FROM dossiers")
+        result = await self._session.execute(query)
+        rows = result.fetchall()
+        return [
+            Dossier(
+                uuid=row.uuid,
+                first_name=row.first_name,
+                middle_name=row.middle_name,
+                last_name=row.last_name,
+                photo_url=row.photo_url,
+                phone_number=row.phone_number,
+                description=row.description,
+            )
+            for row in rows
+        ]

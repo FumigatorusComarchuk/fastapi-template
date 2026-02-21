@@ -1,15 +1,39 @@
-from typing import Annotated
+from typing import Annotated, List
 from uuid import UUID
 
 from dishka.integrations.fastapi import DishkaRoute, FromDishka
 from fastapi import APIRouter, HTTPException, Path, status
 
 from src.application.dto import NewDossierDTO
-from src.application.interactors import GetDossierInteractor, NewDossierInteractor
+from src.application.interactors import (
+    GetDossierInteractor,
+    NewDossierInteractor,
+    GetDossierListInteractor,
+)
 from src.controllers.http.schemas import DossierSchema
 
 
 dossier_router = APIRouter(prefix="/dossier", route_class=DishkaRoute)
+
+
+@dossier_router.get("/")
+async def get_all_dossiers(
+    interactor: FromDishka[GetDossierListInteractor],
+) -> List[DossierSchema] | List:
+    dossier_dms = await interactor()
+
+    return [
+        DossierSchema(
+            uuid=dossier_dm.uuid,
+            first_name=dossier_dm.first_name,
+            middle_name=dossier_dm.middle_name,
+            last_name=dossier_dm.last_name,
+            photo_url=dossier_dm.photo_url,
+            phone_number=dossier_dm.phone_number,
+            description=dossier_dm.description,
+        )
+        for dossier_dm in dossier_dms
+    ]
 
 
 @dossier_router.get("/{dossier_id:uuid}")
@@ -25,6 +49,7 @@ async def get_dossier(
         )
 
     return DossierSchema(
+        uuid=dossier_dm.uuid,
         first_name=dossier_dm.first_name,
         middle_name=dossier_dm.middle_name,
         last_name=dossier_dm.last_name,
@@ -54,4 +79,3 @@ async def new_dossier(
     )
     uuid = await interactor(dto)
     return uuid
-
