@@ -3,7 +3,7 @@ from dishka.integrations.fastapi import setup_dishka
 from fastapi import FastAPI
 
 from src.config import Config
-from src.controllers.http import dossier_router
+from src.adapters.controllers.http import dossier_router
 from src.ioc import AppProvider
 
 config = Config()

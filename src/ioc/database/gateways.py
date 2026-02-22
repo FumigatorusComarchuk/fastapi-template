@@ -1,7 +1,7 @@
 from dishka import Provider, Scope, provide, AnyOf
 
 from src.application import interfaces
-from src.infrastructure.database.gateways import DossierGateway
+from src.adapters.infrastructure.database.gateways import DossierGateway
 
 
 class DatabaseGatewaysProvider(Provider):

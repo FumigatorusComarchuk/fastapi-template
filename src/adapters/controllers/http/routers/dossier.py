@@ -10,7 +10,7 @@ from src.application.interactors import (
     NewDossierInteractor,
     GetDossierListInteractor,
 )
-from src.controllers.http.schemas import DossierSchema
+from src.adapters.controllers.http.schemas import DossierSchema
 
 
 dossier_router = APIRouter(prefix="/dossier", route_class=DishkaRoute)
