@@ -2,7 +2,6 @@ name: fastapi-template
 services:
   db:
     image: postgres:15-alpine
-    container_name: fastapi-template-db
     environment:
       POSTGRES_USER: $POSTGRES_USER
       POSTGRES_PASSWORD: $POSTGRES_PASSWORD
